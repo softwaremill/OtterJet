@@ -17,7 +17,7 @@ public class MsgsController {
 
     @GetMapping()
     public String page(Model model) {
-        System.out.println("amount of msgs" + readerService.getMsgs().size());
+        System.out.println("amount of msgs: " + readerService.getMsgs().size());
         model.addAttribute("messages", readerService.getMsgs());
         return TEMPLATE_NAME;
     }
