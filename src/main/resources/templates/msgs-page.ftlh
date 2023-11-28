@@ -11,19 +11,17 @@
             word-wrap: break-word;
             overflow: hidden;
             transition: max-height 0.2s ease-out;
-            max-height: 500px; /* Adjust this value based on your content */
+            max-height: 500px; /* Adjust this value based on your preference */
+            overflow-y: auto; /* Makes the content scrollable */
         }
-
         .collapsed {
-            max-height: 5px;
+            max-height: 0;
             padding: 0;
         }
-
         .heading-container {
             display: flex;
             align-items: center; /* Aligns items vertically */
         }
-
         .heading-container h2 {
             margin-right: 10px; /* Adds some space between the heading and the button */
             flex-grow: 1; /* Allows the heading to take up the available space */
