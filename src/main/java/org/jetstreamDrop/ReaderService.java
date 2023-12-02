@@ -96,4 +96,19 @@ public class ReaderService {
     public List<ReadMessage> getMsgs() {
         return msgs.stream().toList();
     }
+
+    public List<ReadMessage> filter(String subject, String type) {
+        return msgs.stream().filter(m -> {
+                    if (subject != null && !subject.isBlank()) {
+                        return m.subject().contains(subject);
+                    }
+                    return true;
+                }).
+                filter(m -> {
+                    if (type != null && !type.isBlank()) {
+                        return m.name().contains(type);
+                    }
+                    return true;
+                }).toList();
+    }
 }
