@@ -12,8 +12,8 @@
             word-wrap: break-word;
             overflow: hidden;
             transition: max-height 0.2s ease-out;
-            max-height: 500px; /* Adjust this value based on your preference */
-            overflow-y: auto; /* Makes the content scrollable */
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         .collapsed {
@@ -23,12 +23,12 @@
 
         .heading-container {
             display: flex;
-            align-items: center; /* Aligns items vertically */
+            align-items: center;
         }
 
         .heading-container h2 {
-            margin-right: 10px; /* Adds some space between the heading and the button */
-            flex-grow: 1; /* Allows the heading to take up the available space */
+            margin-right: 10px;
+            flex-grow: 1;
         }
 
         .form-container {
@@ -40,6 +40,80 @@
         .form-container form {
             margin: 0 20px;
         }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+
+        h1 {
+            color: #444444;
+        }
+
+        .form-container, .heading-container {
+            margin-bottom: 20px;
+        }
+
+        form {
+            background: #ffffff;
+            padding: 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        button {
+            background: #5C6BC0;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #3F51B5;
+        }
+
+        .collapsible-content {
+            background: white;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .collapsible-content, .collapsed {
+            border: 1px solid #ced4da;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        input[type="text"]:focus, button:focus {
+            outline: none;
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .form-field {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        label {
+            flex-basis: 30%;
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
     </style>
     <script>
         function htmlDecode(input) {
@@ -61,11 +135,11 @@
     </form>
 
     <form method="GET" action="<@spring.url '/msgs/filterMessages'/>">
-        <div>
+        <div class="form-field">
             <label for="topic">Topic:</label>
             <input type="text" id="topic" name="topic" value="${topic}">
         </div>
-        <div>
+        <div class="form-field">
             <label for="type">Message type:</label>
             <input type="text" id="type" name="type" value="${type}">
         </div>
