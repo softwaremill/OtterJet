@@ -6,26 +6,30 @@ import io.nats.client.JetStream;
 import io.nats.client.Message;
 import io.nats.client.Nats;
 import io.nats.client.Subscription;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ReaderService {
 
-  String natsServerUrl = "nats://localhost:4222"; // Change this to your NATS server URL
+  private final String natsServerUrl;
+  private final String pathToDesc;
   String subject = "*"; // Change this to your desired subject
 
-  @Value("${pathToDesc}")
-  private String pathToDesc;
-
   ArrayDeque<ReadMessage> msgs = new ArrayDeque<>();
+
+  public ReaderService(
+      @Value("${nats.server.url}") String natsServerUrl,
+      @Value("${pathToDesc}") String pathToDesc) {
+    this.natsServerUrl = natsServerUrl;
+    this.pathToDesc = pathToDesc;
+  }
 
   @PostConstruct
   public void postConstruct() {
