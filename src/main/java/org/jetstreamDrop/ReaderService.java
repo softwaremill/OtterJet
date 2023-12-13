@@ -42,45 +42,18 @@ public class ReaderService {
             () -> {
               try {
                 // Connect to NATS server
-                Connection natsConnection = Nats.connect(natsServerUrl);
-                System.out.println("Connected to NATS server at " + natsServerUrl);
+                try (Connection natsConnection = Nats.connect(natsServerUrl)) {
+                  System.out.println("Connected to NATS server at " + natsServerUrl);
 
-                JetStream jetStream = natsConnection.jetStream();
-                System.out.println("Connected to JetStream server at " + natsServerUrl);
-                // Subscribe to the subject
+                  JetStream jetStream = natsConnection.jetStream();
+                  System.out.println("Connected to JetStream server at " + natsServerUrl);
+                  // Subscribe to the subject
 
-                Subscription subscription = jetStream.subscribe(subject);
-                System.out.println("Subscribed to subject: " + subject);
-                MessageDeserializer messageDeserializer = getMessageDeserializer();
+                  Subscription subscription = jetStream.subscribe(subject);
+                  System.out.println("Subscribed to subject: " + subject);
+                  MessageDeserializer messageDeserializer = getMessageDeserializer();
 
-                // Continuously read messages
-                while (true) {
-                  // Wait for a message
-                  Message message = subscription.nextMessage(100);
-                  // Print the message
-                  if (message != null) {
-                    try {
-
-                      String typeUrl =
-                          Any.parseFrom(ByteBuffer.wrap(message.getData())).getTypeUrl();
-                      String[] splittedTypeUrl = typeUrl.split("/");
-                      // the last part in the type url is always the FQCN for this proto
-                      var name = splittedTypeUrl[splittedTypeUrl.length - 1];
-                      // This code need to be moved somewhere else
-
-                      String s =
-                          messageDeserializer.deserializeMessage(
-                              ByteBuffer.wrap(message.getData()));
-                      ReadMessage msg =
-                          new ReadMessage(
-                              message.getSubject(), name, s, message.metaData().timestamp());
-                      System.out.println("deserialized msg: " + msg);
-                      msgs.addFirst(msg);
-                      message.ack();
-                    } catch (Exception e) {
-                      System.out.println("Exception " + e);
-                    }
-                  }
+                  continuouslyReadMessages(subscription, messageDeserializer);
                 }
 
               } catch (Exception e) {
@@ -88,6 +61,35 @@ public class ReaderService {
               }
             })
         .start();
+  }
+
+  private void continuouslyReadMessages(
+      Subscription subscription, MessageDeserializer messageDeserializer)
+      throws InterruptedException {
+    while (true) {
+      // Wait for a message
+      Message message = subscription.nextMessage(100);
+      // Print the message
+      if (message != null) {
+        try {
+
+          String typeUrl = Any.parseFrom(ByteBuffer.wrap(message.getData())).getTypeUrl();
+          String[] splittedTypeUrl = typeUrl.split("/");
+          // the last part in the type url is always the FQCN for this proto
+          var name = splittedTypeUrl[splittedTypeUrl.length - 1];
+          // This code need to be moved somewhere else
+
+          String s = messageDeserializer.deserializeMessage(ByteBuffer.wrap(message.getData()));
+          ReadMessage msg =
+              new ReadMessage(message.getSubject(), name, s, message.metaData().timestamp());
+          System.out.println("deserialized msg: " + msg);
+          msgs.addFirst(msg);
+          message.ack();
+        } catch (Exception e) {
+          System.out.println("Exception " + e);
+        }
+      }
+    }
   }
 
   public MessageDeserializer getMessageDeserializer() throws FileNotFoundException {
