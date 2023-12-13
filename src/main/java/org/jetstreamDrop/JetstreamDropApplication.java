@@ -8,8 +8,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @EntityScan
 public class JetstreamDropApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(JetstreamDropApplication.class, args);
-    }
-
+  public static void main(String[] args) {
+    SpringApplication.run(JetstreamDropApplication.class, args);
+  }
 }

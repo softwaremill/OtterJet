@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//Kudos for kafdrop for this code.
+// Kudos for kafdrop for this code.
 public class ProtobufMessageDeserializer implements MessageDeserializer {
 
   private final String fullDescFile;
@@ -45,15 +45,16 @@ public class ProtobufMessageDeserializer implements MessageDeserializer {
 
       List<FileDescriptor> descs = new ArrayList<>();
       for (FileDescriptorProto ffdp : set.getFileList()) {
-        FileDescriptor fd = FileDescriptor.buildFrom(
-          ffdp,
-          descs.toArray(new FileDescriptor[0]));
+        FileDescriptor fd = FileDescriptor.buildFrom(ffdp, descs.toArray(new FileDescriptor[0]));
         descs.add(fd);
       }
 
       final var descriptors =
-        descs.stream().flatMap(desc -> desc.getMessageTypes().stream()).collect(Collectors.toList());
-      // automatically detect the message type name if the proto is "Any" and no message type name is given
+          descs.stream()
+              .flatMap(desc -> desc.getMessageTypes().stream())
+              .collect(Collectors.toList());
+      // automatically detect the message type name if the proto is "Any" and no message type name
+      // is given
       if (isAnyProto && msgTypeName.isBlank()) {
         String typeUrl = Any.parseFrom(buffer).getTypeUrl();
         String[] splittedTypeUrl = typeUrl.split("/");
@@ -62,8 +63,12 @@ public class ProtobufMessageDeserializer implements MessageDeserializer {
       }
       // check for full name too if the proto is "Any"
       final var messageDescriptor =
-        descriptors.stream().filter(desc -> msgTypeNameRef.get().equals(desc.getName())
-          || msgTypeNameRef.get().equals(desc.getFullName())).findFirst();
+          descriptors.stream()
+              .filter(
+                  desc ->
+                      msgTypeNameRef.get().equals(desc.getName())
+                          || msgTypeNameRef.get().equals(desc.getFullName()))
+              .findFirst();
       if (messageDescriptor.isEmpty()) {
         final String errorMsg = "Can't find specific message type: " + msgTypeNameRef.get();
         LOG.error(errorMsg);
@@ -72,15 +77,20 @@ public class ProtobufMessageDeserializer implements MessageDeserializer {
       DynamicMessage message = null;
       if (isAnyProto) {
         // parse the value from "Any" proto instead of the "Any" proto itself
-        message = DynamicMessage.parseFrom(messageDescriptor.get(), Any.parseFrom(buffer).getValue());
+        message =
+            DynamicMessage.parseFrom(messageDescriptor.get(), Any.parseFrom(buffer).getValue());
       } else {
-        message = DynamicMessage.parseFrom(messageDescriptor.get(), CodedInputStream.newInstance(buffer));
+        message =
+            DynamicMessage.parseFrom(messageDescriptor.get(), CodedInputStream.newInstance(buffer));
       }
 
-      JsonFormat.TypeRegistry typeRegistry = JsonFormat.TypeRegistry.newBuilder().add(descriptors).build();
+      JsonFormat.TypeRegistry typeRegistry =
+          JsonFormat.TypeRegistry.newBuilder().add(descriptors).build();
       Printer printer = JsonFormat.printer().usingTypeRegistry(typeRegistry);
 
-      return printer.print(message).replace("\n", ""); // must remove line break so it defaults to collapse mode
+      return printer
+          .print(message)
+          .replace("\n", ""); // must remove line break so it defaults to collapse mode
     } catch (FileNotFoundException e) {
       final String errorMsg = "Couldn't open descriptor file: " + fullDescFile;
       LOG.error(errorMsg, e);
@@ -95,5 +105,4 @@ public class ProtobufMessageDeserializer implements MessageDeserializer {
       throw new DeserializationException(errorMsg);
     }
   }
-
 }
