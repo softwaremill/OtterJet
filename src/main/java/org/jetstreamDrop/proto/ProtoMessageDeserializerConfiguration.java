@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
 @Configuration
-@ConditionalOnProperty("read.proto.pathToDescriptor")
+@ConditionalOnProperty(value = "read.mode", havingValue = "proto")
 public class ProtoMessageDeserializerConfiguration {
 
   @Bean

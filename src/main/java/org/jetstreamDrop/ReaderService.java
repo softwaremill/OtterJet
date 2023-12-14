@@ -1,6 +1,5 @@
 package org.jetstreamDrop;
 
-import com.google.protobuf.Any;
 import io.nats.client.Connection;
 import io.nats.client.JetStream;
 import io.nats.client.JetStreamApiException;
@@ -93,13 +92,6 @@ public class ReaderService {
       // Print the message
       if (message != null) {
         try {
-
-          String typeUrl = Any.parseFrom(ByteBuffer.wrap(message.getData())).getTypeUrl();
-          String[] splittedTypeUrl = typeUrl.split("/");
-          // the last part in the type url is always the FQCN for this proto
-          var name = splittedTypeUrl[splittedTypeUrl.length - 1];
-          // This code need to be moved somewhere else
-
           DeserializedMessage deserializedMessage =
               messageDeserializer.deserializeMessage(ByteBuffer.wrap(message.getData()));
           ReadMessage msg =
