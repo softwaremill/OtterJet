@@ -19,6 +19,6 @@ class ReaderConfiguration {
   public ReaderService readerService(
       @Value("${nats.server.url}") String natsServerUrl, MessageDeserializer messageDeserializer) {
     return new ReaderService(
-        natsServerUrl, messageDeserializer, readerConfigurationProperties.subject());
+        natsServerUrl, messageDeserializer, readerConfigurationProperties.getSubject());
   }
 }
