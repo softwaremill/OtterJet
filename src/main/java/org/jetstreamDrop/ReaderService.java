@@ -124,7 +124,7 @@ public class ReaderService {
       throw new FileNotFoundException("File not found!");
     }
     boolean isAnyProto = true;
-    String msgTypeName = "protobuf.Person";
+    String msgTypeName = "*";
     String fullDescFile = file.getPath();
 
     System.out.println("file " + fullDescFile + "  exists");

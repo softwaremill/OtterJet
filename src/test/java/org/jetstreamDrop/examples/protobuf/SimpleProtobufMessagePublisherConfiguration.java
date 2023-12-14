@@ -1,6 +1,7 @@
 package org.jetstreamDrop.examples.protobuf;
 
 import com.github.javafaker.Faker;
+import com.google.protobuf.Any;
 import io.nats.client.Connection;
 import io.nats.client.JetStream;
 import io.nats.client.JetStreamManagement;
@@ -51,7 +52,10 @@ class SimpleProtobufMessagePublisherConfiguration {
           System.out.println("About to publish " + person);
           PublishAck pa =
               js.publish(
-                  NatsMessage.builder().subject("person").data(person.toByteArray()).build());
+                  NatsMessage.builder()
+                      .subject("person")
+                      .data(Any.pack(person).toByteArray())
+                      .build());
           System.out.println(pa);
           Thread.sleep(2000);
         }
