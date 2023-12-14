@@ -3,20 +3,26 @@ package org.jetstreamDrop;
 import com.google.protobuf.Any;
 import io.nats.client.Connection;
 import io.nats.client.JetStream;
+import io.nats.client.JetStreamApiException;
 import io.nats.client.Message;
 import io.nats.client.Nats;
 import io.nats.client.Subscription;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReaderService {
+
+  private static final Logger LOG = LoggerFactory.getLogger(ReaderService.class);
 
   private final String natsServerUrl;
   private final String pathToDesc;
@@ -49,7 +55,7 @@ public class ReaderService {
                   System.out.println("Connected to JetStream server at " + natsServerUrl);
                   // Subscribe to the subject
 
-                  Subscription subscription = jetStream.subscribe(subject);
+                  Subscription subscription = tryToSubscribe(jetStream);
                   System.out.println("Subscribed to subject: " + subject);
                   MessageDeserializer messageDeserializer = getMessageDeserializer();
 
@@ -57,10 +63,31 @@ public class ReaderService {
                 }
 
               } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("Error during message reading: ", e);
               }
             })
         .start();
+  }
+
+  private Subscription tryToSubscribe(JetStream jetStream)
+      throws IOException, JetStreamApiException, InterruptedException {
+
+    Subscription subscription;
+    try {
+      subscription = jetStream.subscribe(subject);
+    } catch (IllegalStateException e) {
+      if (e.getMessage().contains("SUB-90007")) { // No matching streams for subject
+        // try again after 5 seconds
+        LOG.warn(
+            "Unable to subscribe to subject: "
+                + subject
+                + " . No matching streams. Trying again in 5sec...");
+        Thread.sleep(5000);
+        return tryToSubscribe(jetStream);
+      }
+      throw new RuntimeException(e);
+    }
+    return subscription;
   }
 
   private void continuouslyReadMessages(
@@ -82,11 +109,10 @@ public class ReaderService {
           String s = messageDeserializer.deserializeMessage(ByteBuffer.wrap(message.getData()));
           ReadMessage msg =
               new ReadMessage(message.getSubject(), name, s, message.metaData().timestamp());
-          System.out.println("deserialized msg: " + msg);
           msgs.addFirst(msg);
           message.ack();
         } catch (Exception e) {
-          System.out.println("Exception " + e);
+          LOG.warn("Unable to deserialize message", e);
         }
       }
     }
@@ -98,7 +124,7 @@ public class ReaderService {
       throw new FileNotFoundException("File not found!");
     }
     boolean isAnyProto = true;
-    String msgTypeName = "";
+    String msgTypeName = "protobuf.Person";
     String fullDescFile = file.getPath();
 
     System.out.println("file " + fullDescFile + "  exists");

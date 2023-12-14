@@ -1,1 +1,5 @@
-pathToDesc: "./some_proto.dsc"
+pathToDesc: "src/test/resources/person.desc"
+
+nats:
+  server:
+    url: nats://${nats.server.host}:${nats.server.port}
