@@ -159,8 +159,7 @@
             var formattedJson = JSON.stringify(messageData, null, 4);
             document.getElementById('collapsible-${message_index}').textContent = formattedJson;
         } catch (error) {
-            console.error('Error parsing JSON message:', error);
-            document.getElementById('collapsible-${message_index}').textContent = 'Error in JSON format';
+            document.getElementById('collapsible-${message_index}').textContent = '${message.body()}';
         }
     </script>
 </#list>
