@@ -7,8 +7,6 @@ import io.nats.client.JetStreamApiException;
 import io.nats.client.Message;
 import io.nats.client.Nats;
 import io.nats.client.Subscription;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
@@ -16,25 +14,22 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
-@Service
 public class ReaderService {
 
   private static final Logger LOG = LoggerFactory.getLogger(ReaderService.class);
 
   private final String natsServerUrl;
-  private final String pathToDesc;
-  String subject = "*"; // Change this to your desired subject
+  private final MessageDeserializer messageDeserializer;
+  private final String subject;
 
   ArrayDeque<ReadMessage> msgs = new ArrayDeque<>();
 
   public ReaderService(
-      @Value("${nats.server.url}") String natsServerUrl,
-      @Value("${pathToDesc}") String pathToDesc) {
+      String natsServerUrl, MessageDeserializer messageDeserializer, String subject) {
     this.natsServerUrl = natsServerUrl;
-    this.pathToDesc = pathToDesc;
+    this.messageDeserializer = messageDeserializer;
+    this.subject = subject;
   }
 
   @PostConstruct
@@ -49,15 +44,14 @@ public class ReaderService {
               try {
                 // Connect to NATS server
                 try (Connection natsConnection = Nats.connect(natsServerUrl)) {
-                  System.out.println("Connected to NATS server at " + natsServerUrl);
+                  LOG.info("Connected to NATS server at: {}", natsServerUrl);
 
                   JetStream jetStream = natsConnection.jetStream();
-                  System.out.println("Connected to JetStream server at " + natsServerUrl);
+                  LOG.info("Connected to JetStream server at: {}", natsServerUrl);
                   // Subscribe to the subject
 
                   Subscription subscription = tryToSubscribe(jetStream);
-                  System.out.println("Subscribed to subject: " + subject);
-                  MessageDeserializer messageDeserializer = getMessageDeserializer();
+                  LOG.info("Subscribed to subject: {}", natsServerUrl);
 
                   continuouslyReadMessages(subscription, messageDeserializer);
                 }
@@ -106,9 +100,14 @@ public class ReaderService {
           var name = splittedTypeUrl[splittedTypeUrl.length - 1];
           // This code need to be moved somewhere else
 
-          String s = messageDeserializer.deserializeMessage(ByteBuffer.wrap(message.getData()));
+          DeserializedMessage deserializedMessage =
+              messageDeserializer.deserializeMessage(ByteBuffer.wrap(message.getData()));
           ReadMessage msg =
-              new ReadMessage(message.getSubject(), name, s, message.metaData().timestamp());
+              new ReadMessage(
+                  message.getSubject(),
+                  deserializedMessage.name(),
+                  deserializedMessage.content(),
+                  message.metaData().timestamp());
           msgs.addFirst(msg);
           message.ack();
         } catch (Exception e) {
@@ -116,19 +115,6 @@ public class ReaderService {
         }
       }
     }
-  }
-
-  public MessageDeserializer getMessageDeserializer() throws FileNotFoundException {
-    File file = new File(pathToDesc);
-    if (!file.exists()) {
-      throw new FileNotFoundException("File not found!");
-    }
-    boolean isAnyProto = true;
-    String msgTypeName = "*";
-    String fullDescFile = file.getPath();
-
-    System.out.println("file " + fullDescFile + "  exists");
-    return new ProtobufMessageDeserializer(fullDescFile, msgTypeName, isAnyProto);
   }
 
   public List<ReadMessage> getMsgs() {

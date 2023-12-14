@@ -1,4 +1,7 @@
-pathToDesc: "src/test/resources/person.desc"
+read:
+  proto:
+    pathToDescriptor: "src/test/resources/person.desc"
+  subject: "*"
 
 nats:
   server:

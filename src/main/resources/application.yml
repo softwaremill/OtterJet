@@ -1,3 +1,8 @@
+read:
+  #  proto:
+  #    pathToDescriptor: "src/test/resources/person.desc"
+  subject: "*"
+
 server:
   port: 1111
 

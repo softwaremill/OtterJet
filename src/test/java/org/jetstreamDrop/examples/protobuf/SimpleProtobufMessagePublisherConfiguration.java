@@ -12,6 +12,8 @@ import io.nats.client.api.StreamConfiguration;
 import io.nats.client.api.StreamInfo;
 import io.nats.client.impl.NatsMessage;
 import io.nats.client.support.JsonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +21,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 class SimpleProtobufMessagePublisherConfiguration {
+
+  private static final Logger LOG =
+      LoggerFactory.getLogger(SimpleProtobufMessagePublisherConfiguration.class);
+
   @Bean
   CommandLineRunner simplePublisher(@Value("${nats.server.url}") String serverUrl) {
     return (args) -> {
@@ -43,24 +49,23 @@ class SimpleProtobufMessagePublisherConfiguration {
         while (true) {
           PersonProtos.Person person =
               PersonProtos.Person.newBuilder()
-                  .setId(faker.number().numberBetween(1, 10))
+                  .setId(faker.number().numberBetween(1, Integer.MAX_VALUE))
                   .setName(faker.name().firstName())
                   .setEmail(faker.bothify("????##@gmail.com"))
                   .addNumbers(faker.phoneNumber().phoneNumber())
                   .build();
-
-          System.out.println("About to publish " + person);
+          LOG.info("About to publish: {}", person);
           PublishAck pa =
               js.publish(
                   NatsMessage.builder()
                       .subject("person")
                       .data(Any.pack(person).toByteArray())
                       .build());
-          System.out.println(pa);
+          LOG.info("Publish ack received: {}", pa);
           Thread.sleep(2000);
         }
       } catch (Exception e) {
-        System.err.println(e);
+        LOG.error("Error during message publish", e);
       }
     };
   }
