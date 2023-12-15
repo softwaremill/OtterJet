@@ -21,7 +21,7 @@ public class JetStreamUtils {
               .build();
       jsm.addStream(streamConfig);
     } catch (Exception ex) {
-      throw new RuntimeException(ex);
+      throw new RuntimeException("Error during creation of a stream for subject: " + subject, ex);
     }
   }
 
@@ -32,7 +32,7 @@ public class JetStreamUtils {
       NatsMessage sentMessage = NatsMessage.builder().subject(subject).data(data).build();
       js.publish(sentMessage);
     } catch (Exception ex) {
-      throw new RuntimeException(ex);
+      throw new RuntimeException("Error during message publish on subject: " + subject, ex);
     }
   }
 }
