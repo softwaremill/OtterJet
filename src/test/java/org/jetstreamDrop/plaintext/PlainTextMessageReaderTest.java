@@ -8,7 +8,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-
 import org.jetstreamDrop.AbstractIntegrationTest;
 import org.jetstreamDrop.JetStreamContainerInitializer;
 import org.jetstreamDrop.JetStreamUtils;
@@ -18,9 +17,6 @@ import org.jetstreamDrop.ReaderService;
 import org.jetstreamDrop.assertions.ComparisonConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = {"read.mode=plaintext", "read.subject=plaintext"})
