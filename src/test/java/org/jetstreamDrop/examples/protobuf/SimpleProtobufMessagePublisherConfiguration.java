@@ -1,11 +1,11 @@
 package org.jetstreamDrop.examples.protobuf;
 
-import com.github.javafaker.Faker;
 import com.google.protobuf.Any;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.jetstreamDrop.JetStreamUtils;
+import org.jetstreamDrop.examples.RandomProtoPersonGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -28,14 +28,7 @@ class SimpleProtobufMessagePublisherConfiguration {
           Executors.newSingleThreadScheduledExecutor();
       scheduledExecutorService.scheduleAtFixedRate(
           () -> {
-            Faker faker = new Faker();
-            PersonProtos.Person person =
-                PersonProtos.Person.newBuilder()
-                    .setId(faker.number().numberBetween(1, Integer.MAX_VALUE))
-                    .setName(faker.name().firstName())
-                    .setEmail(faker.bothify("????##@gmail.com"))
-                    .addNumbers(faker.phoneNumber().phoneNumber())
-                    .build();
+            PersonProtos.Person person = RandomProtoPersonGenerator.randomPerson();
             JetStreamUtils.tryToSendMessage(Any.pack(person).toByteArray(), subject, serverUrl);
           },
           0,
