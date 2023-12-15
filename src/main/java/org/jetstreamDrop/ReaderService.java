@@ -32,7 +32,7 @@ public class ReaderService {
   }
 
   @PostConstruct
-  public void postConstruct() {
+  public void startReadingMessages() {
     // This method will be invoked after the service is initialized
     startMessageListener();
   }
@@ -109,7 +109,7 @@ public class ReaderService {
     }
   }
 
-  public List<ReadMessage> getMsgs() {
+  public List<ReadMessage> getMessages() {
     return msgs.stream().toList();
   }
 

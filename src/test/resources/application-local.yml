@@ -3,7 +3,3 @@ read:
   proto:
     pathToDescriptor: "src/test/resources/person.desc"
   subject: "*"
-
-nats:
-  server:
-    url: nats://${nats.server.host}:${nats.server.port}

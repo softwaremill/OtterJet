@@ -9,7 +9,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy;
 import org.testcontainers.lifecycle.Startables;
 
-class JetStreamContainerInitializer
+public class JetStreamContainerInitializer
     implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
   static GenericContainer natsJetStream =
@@ -24,12 +24,10 @@ class JetStreamContainerInitializer
     var env = applicationContext.getEnvironment();
     env.getPropertySources()
         .addFirst(
-            new MapPropertySource(
-                "testcontainers",
-                Map.of(
-                    "nats.server.host",
-                    natsJetStream.getHost(),
-                    "nats.server.port",
-                    natsJetStream.getMappedPort(4222))));
+            new MapPropertySource("testcontainers", Map.of("nats.server.url", getNatsServerUrl())));
+  }
+
+  public static String getNatsServerUrl() {
+    return "nats://" + natsJetStream.getHost() + ":" + natsJetStream.getMappedPort(4222);
   }
 }

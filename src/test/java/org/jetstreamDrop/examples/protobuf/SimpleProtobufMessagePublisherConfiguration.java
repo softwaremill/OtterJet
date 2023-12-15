@@ -19,6 +19,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 class SimpleProtobufMessagePublisherConfiguration {
@@ -27,6 +28,7 @@ class SimpleProtobufMessagePublisherConfiguration {
       LoggerFactory.getLogger(SimpleProtobufMessagePublisherConfiguration.class);
 
   @Bean
+  @Profile("!test")
   @ConditionalOnProperty(value = "read.mode", havingValue = "proto")
   CommandLineRunner simplePublisher(@Value("${nats.server.url}") String serverUrl) {
     return (args) -> {

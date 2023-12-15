@@ -20,8 +20,8 @@ public class MsgsController {
 
   @GetMapping()
   public String page(Model model) {
-    System.out.println("amount of msgs: " + readerService.getMsgs().size());
-    model.addAttribute("messages", readerService.getMsgs());
+    System.out.println("amount of msgs: " + readerService.getMessages().size());
+    model.addAttribute("messages", readerService.getMessages());
     model.addAttribute("topic", topic);
     model.addAttribute("type", type);
     return TEMPLATE_NAME;
