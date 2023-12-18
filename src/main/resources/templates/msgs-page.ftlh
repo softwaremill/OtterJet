@@ -182,7 +182,9 @@
             <div class="message__detail">Subject: ${message.subject()}</div>
             <div class="message__detail">Timestamp: <span class="message__timestamp"
                                                           data-timestamp="${message.timestamp()}"></span></div>
-            <div class="message__detail">Type: ${message.name()}</div>
+            <#if message.name()?has_content>
+                <div class="message__detail">Type: ${message.name()}</div>
+            </#if>
         </div>
     </div>
     <pre id="collapsible-${message_index}" class="message__content"></pre>
