@@ -99,7 +99,7 @@ public class ReaderService {
                   message.getSubject(),
                   deserializedMessage.name(),
                   deserializedMessage.content(),
-                  message.metaData().timestamp());
+                  message.metaData().timestamp().toLocalDateTime());
           msgs.addFirst(msg);
           message.ack();
         } catch (Exception e) {

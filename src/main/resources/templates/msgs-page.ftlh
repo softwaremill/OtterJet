@@ -4,31 +4,64 @@
 <head>
     <title>Jetstream Messages Display</title>
     <style>
-        .collapsible-content {
-            border: 1px solid #ccc;
-            padding: 10px;
-            background-color: #f9f9f9;
+
+        /* Base styles for the message block */
+        .message {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Styles for the Show/Hide button within the message */
+        .message__toggle-button {
+            background: #5C6BC0;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .message__toggle-button:hover {
+            background: #3F51B5;
+        }
+
+        /* Styles for the message details container */
+        .message__details {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 0.9em;
+        }
+
+        /* Styles for each detail within the message */
+        .message__detail {
+            margin-right: 15px;
+            color: #212529; /* Adjust the color as needed */
+        }
+
+        /* Styles for the collapsible content */
+        .message__content {
+            background: white;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            margin-bottom: 10px;
             white-space: pre-wrap;
             word-wrap: break-word;
             overflow: hidden;
-            transition: max-height 0.2s ease-out;
             max-height: 500px;
+            padding: 10px;
+            transition: max-height 0.2s ease-out, padding 0.2s ease-out;
+            opacity: 1;
             overflow-y: auto;
         }
 
-        .collapsed {
+        .message__content.collapsed {
             max-height: 0;
             padding: 0;
-        }
-
-        .heading-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .heading-container h2 {
-            margin-right: 10px;
-            flex-grow: 1;
         }
 
         .form-container {
@@ -54,7 +87,20 @@
             color: #444444;
         }
 
-        .form-container, .heading-container {
+        .controls__refresh-button, .controls__filter-button {
+            background: #5C6BC0;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .controls__refresh-button:hover, .controls__filter-button:hover {
+            background: #3F51B5;
+        }
+
+        .form-container {
             margin-bottom: 20px;
         }
 
@@ -64,30 +110,6 @@
             border: 1px solid #dee2e6;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        button {
-            background: #5C6BC0;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #3F51B5;
-        }
-
-        .collapsible-content {
-            background: white;
-            margin-bottom: 10px;
-            border-radius: 4px;
-        }
-
-        .collapsible-content, .collapsed {
-            border: 1px solid #ced4da;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
         input[type="text"]:focus, button:focus {
@@ -125,13 +147,19 @@
             var element = document.getElementById(id);
             element.classList.toggle("collapsed");
         }
+
+        function formatTimestamp(timestamp) {
+            var date = new Date(timestamp);
+            var options = {year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'};
+            return date.toLocaleDateString(undefined, options);
+        }
     </script>
 </head>
 <body>
 <h1>Messages List</h1>
 <div class="form-container">
     <form method="GET" action="<@spring.url '/msgs/messages'/>">
-        <button type="submit">Refresh</button>
+        <button class="controls__refresh-button" type="submit">Refresh</button>
     </form>
 
     <form method="GET" action="<@spring.url '/msgs/filterMessages'/>">
@@ -143,15 +171,22 @@
             <label for="type">Message type:</label>
             <input type="text" id="type" name="type" value="${type}">
         </div>
-        <button type="submit">Filter Messages</button>
+        <button class="controls__filter-button" type="submit">Filter Messages</button>
     </form>
 </div>
 <#list messages as message>
-    <div class="heading-container">
-        <button onclick="toggleCollapse('collapsible-${message_index}')" style="margin-right: 5px">Show/Hide</button>
-        <h2>Subject: ${message.timestamp()} || ${message.subject()} || Type: ${message.name()} </h2>
+    <div class="message">
+        <button class="message__toggle-button" onclick="toggleCollapse('collapsible-${message_index}')">Show/Hide
+        </button>
+        <div class="message__details">
+            <div class="message__detail">Subject: ${message.subject()}</div>
+            <div class="message__detail">Timestamp: <span class="message__timestamp"
+                                                          data-timestamp="${message.timestamp()}"></span></div>
+            <div class="message__detail">Type: ${message.name()}</div>
+        </div>
     </div>
-    <pre id="collapsible-${message_index}" class="collapsible-content"></pre>
+    <pre id="collapsible-${message_index}" class="message__content"></pre>
+
     <script>
         try {
             var decodedMessage = htmlDecode('${message.body()?json_string}');
@@ -161,6 +196,14 @@
         } catch (error) {
             document.getElementById('collapsible-${message_index}').textContent = '${message.body()}';
         }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var timestamps = document.querySelectorAll('.message__timestamp');
+            timestamps.forEach(function (elem) {
+                var timestamp = elem.getAttribute('data-timestamp');
+                elem.textContent = formatTimestamp(timestamp);
+            });
+        });
     </script>
 </#list>
 </body>

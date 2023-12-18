@@ -6,8 +6,8 @@ import static org.awaitility.Awaitility.await;
 import com.github.javafaker.Faker;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import org.jetstreamDrop.AbstractIntegrationTest;
 import org.jetstreamDrop.JetStreamContainerInitializer;
 import org.jetstreamDrop.JetStreamUtils;
@@ -22,8 +22,8 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {"read.mode=plaintext", "read.subject=plaintext"})
 class PlainTextMessageReaderTest extends AbstractIntegrationTest {
 
-  private static final ZonedDateTime ignoredMessageTimestamp =
-      ZonedDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
+  private static final LocalDateTime ignoredMessageTimestamp =
+      LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
   @Autowired private ReaderService readerService;
   @Autowired private ReaderConfigurationProperties readerConfigurationProperties;
 

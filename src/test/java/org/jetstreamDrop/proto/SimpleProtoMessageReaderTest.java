@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import org.jetstreamDrop.AbstractIntegrationTest;
 import org.jetstreamDrop.JetStreamContainerInitializer;
 import org.jetstreamDrop.JetStreamUtils;
@@ -30,8 +30,8 @@ import org.springframework.test.context.TestPropertySource;
     })
 class SimpleProtoMessageReaderTest extends AbstractIntegrationTest {
 
-  private static final ZonedDateTime ignoredMessageTimestamp =
-      ZonedDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
+  private static final LocalDateTime ignoredMessageTimestamp =
+      LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
   @Autowired private ReaderService readerService;
   @Autowired private ReaderConfigurationProperties readerConfigurationProperties;
 
