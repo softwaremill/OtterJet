@@ -31,6 +31,13 @@
             background: #3F51B5;
         }
 
+        .message__header {
+            display: flex;
+            justify-content: space-between; /* Aligns content and button to opposite ends */
+            align-items: center;
+            width: 100%;
+        }
+
         /* Styles for the message details container */
         .message__details {
             display: flex;
@@ -62,14 +69,17 @@
             transition: max-height 0.2s ease-out, padding 0.2s ease-out;
             opacity: 1;
             overflow-y: auto;
-            width: 50%; /* Start with half the width of the screen */
-            max-width: 100%; /* Allow it to grow up to the full width */
-            box-sizing: border-box; /* Ensure padding and borders are included in the width calculation */
         }
 
         .message__content.collapsed {
             max-height: 0;
             padding: 0;
+        }
+
+        .message__content, .message__header {
+            width: 800px;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .controls {
@@ -212,16 +222,18 @@
 
 <#list messages as message>
     <div class="message">
-        <button class="message__toggle-button" onclick="toggleCollapse('collapsible-${message_index}', this)"
-                id="toggle-button-${message_index}">Hide
-        </button>
-        <div class="message__details">
-            <div class="message__detail">Subject: ${message.subject()}</div>
-            <div class="message__detail">Timestamp: <span class="message__timestamp"
-                                                          data-timestamp="${message.timestamp()}"></span></div>
-            <#if message.name()?has_content>
-                <div class="message__detail">Type: ${message.name()}</div>
-            </#if>
+        <div class="message__header">
+            <div class="message__details">
+                <div class="message__detail">Subject: ${message.subject()}</div>
+                <div class="message__detail">Timestamp: <span class="message__timestamp"
+                                                              data-timestamp="${message.timestamp()}"></span></div>
+                <#if message.name()?has_content>
+                    <div class="message__detail">Type: ${message.name()}</div>
+                </#if>
+            </div>
+            <button class="message__toggle-button" onclick="toggleCollapse('collapsible-${message_index}', this)"
+                    id="toggle-button-${message_index}">Hide
+            </button>
         </div>
     </div>
     <pre id="collapsible-${message_index}" class="message__content"></pre>
