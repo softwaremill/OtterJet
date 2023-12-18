@@ -7,6 +7,7 @@
 
         /* Base styles for the message block */
         .message {
+            padding-top: 10px;
             display: flex;
             align-items: center;
             margin-bottom: 20px;
@@ -41,7 +42,9 @@
         /* Styles for each detail within the message */
         .message__detail {
             margin-right: 15px;
-            color: #212529; /* Adjust the color as needed */
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
         }
 
         /* Styles for the collapsible content */
@@ -66,14 +69,55 @@
             padding: 0;
         }
 
-        .form-container {
-            display: flex;
-            align-items: center;
-            padding: 10px;
+        .controls {
+            padding-top: 10px;
+            padding-bottom: 10px;
         }
 
-        .form-container form {
-            margin: 0 20px;
+        .controls__forms {
+            display: flex;
+            align-items: center;
+        }
+
+        .controls__form {
+            display: flex;
+            align-items: center;
+        }
+
+        .controls__form--refresh {
+            margin-left: 10px;
+        }
+
+        .controls__field {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+
+        .controls__label {
+            margin-right: 5px;
+            white-space: nowrap;
+        }
+
+        .controls__input {
+            /* Styles for your input fields */
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .controls__button {
+            /* Styles for the filter button */
+            background: #5C6BC0;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .controls__button:hover {
+            background: #3F51B5;
         }
 
         body {
@@ -89,23 +133,6 @@
             color: #444444;
         }
 
-        .controls__refresh-button, .controls__filter-button {
-            background: #5C6BC0;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .controls__refresh-button:hover, .controls__filter-button:hover {
-            background: #3F51B5;
-        }
-
-        .form-container {
-            margin-bottom: 20px;
-        }
-
         form {
             background: #ffffff;
             padding: 15px;
@@ -118,12 +145,6 @@
             outline: none;
             border-color: #80bdff;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-
-        .form-field {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
         }
 
         label {
@@ -166,23 +187,26 @@
 </head>
 <body>
 <h1>Messages List</h1>
-<div class="form-container">
-    <form method="GET" action="<@spring.url '/msgs/messages'/>">
-        <button class="controls__refresh-button" type="submit">Refresh</button>
-    </form>
+<div class="controls">
+    <div class="controls__forms">
+        <form method="GET" action="<@spring.url '/msgs/filterMessages'/>" class="controls__form">
+            <div class="controls__field">
+                <label for="topic" class="controls__label">Topic:</label>
+                <input type="text" id="topic" name="topic" value="${topic}" class="controls__input">
+            </div>
+            <div class="controls__field">
+                <label for="type" class="controls__label">Message type:</label>
+                <input type="text" id="type" name="type" value="${type}" class="controls__input">
+            </div>
+            <button type="submit" class="controls__button">Filter Messages</button>
+        </form>
 
-    <form method="GET" action="<@spring.url '/msgs/filterMessages'/>">
-        <div class="form-field">
-            <label for="topic">Topic:</label>
-            <input type="text" id="topic" name="topic" value="${topic}">
-        </div>
-        <div class="form-field">
-            <label for="type">Message type:</label>
-            <input type="text" id="type" name="type" value="${type}">
-        </div>
-        <button class="controls__filter-button" type="submit">Filter Messages</button>
-    </form>
+        <form method="GET" action="<@spring.url '/msgs/messages'/>" class="controls__form controls__form--refresh">
+            <button type="submit" class="controls__button controls__button--refresh">Refresh</button>
+        </form>
+    </div>
 </div>
+
 <#list messages as message>
     <div class="message">
         <button class="message__toggle-button" onclick="toggleCollapse('collapsible-${message_index}', this)"

@@ -1,5 +1,5 @@
 read:
-  mode: "plaintext"
+  mode: "proto"
   proto:
     pathToDescriptor: "src/test/resources/person.desc"
   subject: "*"
