@@ -62,6 +62,9 @@
             transition: max-height 0.2s ease-out, padding 0.2s ease-out;
             opacity: 1;
             overflow-y: auto;
+            width: 50%; /* Start with half the width of the screen */
+            max-width: 100%; /* Allow it to grow up to the full width */
+            box-sizing: border-box; /* Ensure padding and borders are included in the width calculation */
         }
 
         .message__content.collapsed {
