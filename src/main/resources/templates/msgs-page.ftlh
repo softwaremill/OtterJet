@@ -22,6 +22,8 @@
             border-radius: 4px;
             cursor: pointer;
             margin-right: 10px;
+            width: 100px;
+            text-align: center;
         }
 
         .message__toggle-button:hover {
@@ -143,9 +145,16 @@
             return doc.documentElement.textContent;
         }
 
-        function toggleCollapse(id) {
-            var element = document.getElementById(id);
+        function toggleCollapse(contentId, button) {
+            var element = document.getElementById(contentId);
             element.classList.toggle("collapsed");
+
+            // Update button text based on the state
+            if (element.classList.contains("collapsed")) {
+                button.textContent = "Show";
+            } else {
+                button.textContent = "Hide";
+            }
         }
 
         function formatTimestamp(timestamp) {
@@ -176,7 +185,8 @@
 </div>
 <#list messages as message>
     <div class="message">
-        <button class="message__toggle-button" onclick="toggleCollapse('collapsible-${message_index}')">Show/Hide
+        <button class="message__toggle-button" onclick="toggleCollapse('collapsible-${message_index}', this)"
+                id="toggle-button-${message_index}">Hide
         </button>
         <div class="message__details">
             <div class="message__detail">Subject: ${message.subject()}</div>
