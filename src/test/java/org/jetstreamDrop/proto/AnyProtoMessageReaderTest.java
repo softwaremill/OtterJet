@@ -36,6 +36,9 @@ class AnyProtoMessageReaderTest extends AbstractIntegrationTest {
   @Autowired private ReaderService readerService;
   @Autowired private ReaderConfigurationProperties readerConfigurationProperties;
 
+  private final String subjectFilter = "";
+  private final String typeFilter = "";
+
   @Test
   public void shouldReadProtoMessageSentAsAny() {
     // given
@@ -56,7 +59,7 @@ class AnyProtoMessageReaderTest extends AbstractIntegrationTest {
     await()
         .untilAsserted(
             () ->
-                assertThat(readerService.getMessages())
+                assertThat(readerService.filter(subjectFilter, typeFilter))
                     .usingRecursiveFieldByFieldElementComparator(
                         ComparisonConfiguration.configureReadMessageComparisonWithJSONBody())
                     .contains(

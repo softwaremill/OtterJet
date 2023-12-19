@@ -17,8 +17,16 @@ class ReaderConfiguration {
 
   @Bean
   public ReaderService readerService(
-      @Value("${nats.server.url}") String natsServerUrl, MessageDeserializer messageDeserializer) {
+      @Value("${nats.server.host}") String natsServerHost,
+      @Value("${nats.server.port}") String natsServerPort,
+      MessageDeserializer messageDeserializer) {
     return new ReaderService(
-        natsServerUrl, messageDeserializer, readerConfigurationProperties.getSubject());
+        createNatsServerUrl(natsServerHost, natsServerPort),
+        messageDeserializer,
+        readerConfigurationProperties.getSubject());
+  }
+
+  private String createNatsServerUrl(String natsServerHost, String natsServerPort) {
+    return "nats://" + natsServerHost + ":" + natsServerPort;
   }
 }

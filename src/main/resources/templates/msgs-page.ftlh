@@ -2,10 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Jetstream Messages Display</title>
+    <title>JetStream Messages Display</title>
+    <link rel="stylesheet" href="/css/index.css">
     <style>
 
-        /* Base styles for the message block */
         .message {
             padding-top: 10px;
             display: flex;
@@ -33,12 +33,11 @@
 
         .message__header {
             display: flex;
-            justify-content: space-between; /* Aligns content and button to opposite ends */
+            justify-content: space-between;
             align-items: center;
             width: 100%;
         }
 
-        /* Styles for the message details container */
         .message__details {
             display: flex;
             align-items: center;
@@ -46,7 +45,6 @@
             font-size: 0.9em;
         }
 
-        /* Styles for each detail within the message */
         .message__detail {
             margin-right: 15px;
             font-size: 1.1em;
@@ -113,14 +111,12 @@
         }
 
         .controls__input {
-            /* Styles for your input fields */
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
         }
 
         .controls__button {
-            /* Styles for the filter button */
             background: #5C6BC0;
             color: white;
             border: none;
@@ -129,47 +125,12 @@
             cursor: pointer;
         }
 
+        .controls__button--refresh {
+            margin-left: 10px;
+        }
+
         .controls__button:hover {
             background: #3F51B5;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f8f9fa;
-            color: #212529;
-        }
-
-        h1 {
-            color: #444444;
-        }
-
-        form {
-            background: #ffffff;
-            padding: 15px;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        input[type="text"]:focus, button:focus {
-            outline: none;
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-
-        label {
-            flex-basis: 30%;
-            margin-right: 10px;
-        }
-
-        input[type="text"] {
-            flex-grow: 1;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
         }
 
     </style>
@@ -202,19 +163,16 @@
 <h1>Messages List</h1>
 <div class="controls">
     <div class="controls__forms">
-        <form method="GET" action="<@spring.url '/msgs/filterMessages'/>" class="controls__form">
+        <form method="GET" action="<@spring.url '/msgs'/>" class="controls__form">
             <div class="controls__field">
-                <label for="topic" class="controls__label">Topic:</label>
-                <input type="text" id="topic" name="topic" value="${topic}" class="controls__input">
+                <label for="subject" class="controls__label">Subject:</label>
+                <input type="text" id="subject" name="subject" value="${subject}" class="controls__input">
             </div>
             <div class="controls__field">
                 <label for="type" class="controls__label">Message type:</label>
                 <input type="text" id="type" name="type" value="${type}" class="controls__input">
             </div>
             <button type="submit" class="controls__button">Filter Messages</button>
-        </form>
-
-        <form method="GET" action="<@spring.url '/msgs/messages'/>" class="controls__form controls__form--refresh">
             <button type="submit" class="controls__button controls__button--refresh">Refresh</button>
         </form>
     </div>

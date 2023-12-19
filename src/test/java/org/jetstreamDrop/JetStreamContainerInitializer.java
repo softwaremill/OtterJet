@@ -12,10 +12,12 @@ import org.testcontainers.lifecycle.Startables;
 public class JetStreamContainerInitializer
     implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
+  private static final int natsPort = 4222;
+  private static final int monitoringPort = 8222;
   static GenericContainer natsJetStream =
       new GenericContainer("nats:2.10.7")
-          .withCommand("--jetstream")
-          .withExposedPorts(4222)
+          .withCommand("--jetstream", "-m", monitoringPort + "")
+          .withExposedPorts(natsPort, monitoringPort)
           .waitingFor(new LogMessageWaitStrategy().withRegEx(".*Server is ready.*"));
 
   @Override
@@ -24,7 +26,19 @@ public class JetStreamContainerInitializer
     var env = applicationContext.getEnvironment();
     env.getPropertySources()
         .addFirst(
-            new MapPropertySource("testcontainers", Map.of("nats.server.url", getNatsServerUrl())));
+            new MapPropertySource(
+                "testcontainers",
+                Map.of(
+                    "nats.server.host",
+                    natsJetStream.getHost(),
+                    "nats.server.port",
+                    natsJetStream.getMappedPort(natsPort),
+                    "nats.server.url",
+                    getNatsServerUrl(),
+                    "nats.server.monitoring.protocol",
+                    "http",
+                    "nats.server.monitoring.port",
+                    natsJetStream.getMappedPort(monitoringPort))));
   }
 
   public static String getNatsServerUrl() {

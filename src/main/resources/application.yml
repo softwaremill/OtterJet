@@ -7,6 +7,6 @@ read:
 server:
   port: 1111
 
-nats:
-  server:
-    url: "nats://localhost:4222" # we should make this property required when starting JetStreamDropApplication
+logging:
+  level:
+    org.jetstreamDrop.monitoring.NatsMonitoringApiClient: DEBUG

@@ -26,6 +26,8 @@ class PlainTextMessageReaderTest extends AbstractIntegrationTest {
       LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
   @Autowired private ReaderService readerService;
   @Autowired private ReaderConfigurationProperties readerConfigurationProperties;
+  private final String subjectFilter = "";
+  private final String typeFilter = "";
 
   @Test
   public void shouldReadMessagesSentInPlaintext() {
@@ -47,7 +49,7 @@ class PlainTextMessageReaderTest extends AbstractIntegrationTest {
     await()
         .untilAsserted(
             () ->
-                assertThat(readerService.getMessages())
+                assertThat(readerService.filter(subjectFilter, typeFilter))
                     .usingRecursiveFieldByFieldElementComparator(
                         ComparisonConfiguration.configureReadMessageComparison())
                     .contains(

@@ -35,6 +35,9 @@ class SimpleProtoMessageReaderTest extends AbstractIntegrationTest {
   @Autowired private ReaderService readerService;
   @Autowired private ReaderConfigurationProperties readerConfigurationProperties;
 
+  private final String subjectFilter = "";
+  private final String typeFilter = "";
+
   @Test
   public void shouldReadProtoMessageSentAsSpecificType() {
     // given
@@ -55,7 +58,7 @@ class SimpleProtoMessageReaderTest extends AbstractIntegrationTest {
     await()
         .untilAsserted(
             () ->
-                assertThat(readerService.getMessages())
+                assertThat(readerService.filter(subjectFilter, typeFilter))
                     .usingRecursiveFieldByFieldElementComparator(
                         ComparisonConfiguration.configureReadMessageComparisonWithJSONBody())
                     .contains(
