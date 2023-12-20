@@ -45,7 +45,6 @@ class AnyProtoMessageReaderTest extends AbstractIntegrationTest {
     JetStreamUtils.createSubjectStream(
         readerConfigurationProperties.getSubject(),
         JetStreamContainerInitializer.getNatsServerUrl());
-    readerService.startReadingMessages();
     PersonProtos.Person person = RandomProtoPersonGenerator.randomPerson();
     byte[] data = Any.pack(person).toByteArray();
 

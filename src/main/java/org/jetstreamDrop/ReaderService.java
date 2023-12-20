@@ -10,9 +10,12 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
 import java.util.List;
-import javax.annotation.PostConstruct;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 
 public class ReaderService {
 
@@ -21,6 +24,8 @@ public class ReaderService {
   private final String natsServerUrl;
   private final MessageDeserializer messageDeserializer;
   private final String subject;
+
+  private final Executor executorService = Executors.newSingleThreadExecutor();
 
   ArrayDeque<ReadMessage> msgs = new ArrayDeque<>();
 
@@ -31,35 +36,34 @@ public class ReaderService {
     this.subject = subject;
   }
 
-  @PostConstruct
+  @EventListener(ApplicationReadyEvent.class)
   public void startReadingMessages() {
     // This method will be invoked after the service is initialized
     startMessageListener();
   }
 
   private void startMessageListener() {
-    new Thread(
-            () -> {
-              try {
-                // Connect to NATS server
-                try (Connection natsConnection = Nats.connect(natsServerUrl)) {
-                  LOG.info("Connected to NATS server at: {}", natsServerUrl);
+    executorService.execute(
+        () -> {
+          try {
+            // Connect to NATS server
+            try (Connection natsConnection = Nats.connect(natsServerUrl)) {
+              LOG.info("Connected to NATS server at: {}", natsServerUrl);
 
-                  JetStream jetStream = natsConnection.jetStream();
-                  LOG.info("Connected to JetStream server at: {}", natsServerUrl);
-                  // Subscribe to the subject
+              JetStream jetStream = natsConnection.jetStream();
+              LOG.info("Connected to JetStream server at: {}", natsServerUrl);
+              // Subscribe to the subject
 
-                  Subscription subscription = tryToSubscribe(jetStream);
-                  LOG.info("Subscribed to subject: {}", natsServerUrl);
+              Subscription subscription = tryToSubscribe(jetStream);
+              LOG.info("Subscribed to subject: {}", natsServerUrl);
 
-                  continuouslyReadMessages(subscription, messageDeserializer);
-                }
+              continuouslyReadMessages(subscription, messageDeserializer);
+            }
 
-              } catch (Exception e) {
-                LOG.error("Error during message reading: ", e);
-              }
-            })
-        .start();
+          } catch (Exception e) {
+            LOG.error("Error during message reading: ", e);
+          }
+        });
   }
 
   private Subscription tryToSubscribe(JetStream jetStream)

@@ -35,7 +35,6 @@ class PlainTextMessageReaderTest extends AbstractIntegrationTest {
     JetStreamUtils.createSubjectStream(
         readerConfigurationProperties.getSubject(),
         JetStreamContainerInitializer.getNatsServerUrl());
-    readerService.startReadingMessages();
     String randomName = new Faker().name().fullName();
     byte[] data = randomName.getBytes(StandardCharsets.UTF_8);
 
