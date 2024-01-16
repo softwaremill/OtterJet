@@ -1,7 +1,7 @@
 read:
   mode: "proto"
-  #  proto:
-  #    pathToDescriptor: "src/test/resources/person.desc"
+#  proto:
+#    pathToDescriptor: "src/test/resources/person.desc"
   subject: "*"
 
 server:
@@ -10,3 +10,8 @@ server:
 logging:
   level:
     org.jetstreamDrop.monitoring.NatsMonitoringApiClient: DEBUG
+
+nats:
+  server:
+    host: "localhost"
+    port: 4222
