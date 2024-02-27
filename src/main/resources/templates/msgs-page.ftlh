@@ -172,9 +172,17 @@
                 <label for="type" class="controls__label">Message type:</label>
                 <input type="text" id="type" name="type" value="${type}" class="controls__input">
             </div>
+            <input type="hidden" id="page" name="page" value="${page}">
+            <input type="hidden" id="size" name="size" value="${size}">
             <button type="submit" class="controls__button">Filter Messages</button>
             <button type="submit" class="controls__button controls__button--refresh">Refresh</button>
         </form>
+        <!-- Add pagination controls -->
+        <div class="pagination">
+            <button onclick="document.getElementById('page').value = Math.max(0, ${page} - 1); document.forms[0].submit();">Previous</button>
+            <span>Page ${page + 1}</span>
+            <button onclick="document.getElementById('page').value = ${page} + 1; document.forms[0].submit();">Next</button>
+        </div>
     </div>
 </div>
 

@@ -48,7 +48,7 @@ class PlainTextMessageReaderTest extends AbstractIntegrationTest {
     await()
         .untilAsserted(
             () ->
-                assertThat(readerService.filter(subjectFilter, typeFilter))
+                assertThat(readerService.filter(subjectFilter, typeFilter, 0, 10))
                     .usingRecursiveFieldByFieldElementComparator(
                         ComparisonConfiguration.configureReadMessageComparison())
                     .contains(

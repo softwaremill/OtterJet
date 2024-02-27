@@ -113,7 +113,7 @@ public class ReaderService {
     }
   }
 
-  public List<ReadMessage> filter(String subject, String type) {
+  public List<ReadMessage> filter(String subject, String type, int page, int size) {
     return msgs.stream()
         .filter(
             m -> {
@@ -129,6 +129,8 @@ public class ReaderService {
               }
               return true;
             })
+        .skip((long) page * size)
+        .limit(size)
         .toList();
   }
 }
