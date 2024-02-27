@@ -57,7 +57,7 @@ class SimpleProtoMessageReaderTest extends AbstractIntegrationTest {
     await()
         .untilAsserted(
             () ->
-                assertThat(readerService.filter(subjectFilter, typeFilter, 0, 10))
+                assertThat(readerService.filter(subjectFilter, typeFilter, 0, 10, ""))
                     .usingRecursiveFieldByFieldElementComparator(
                         ComparisonConfiguration.configureReadMessageComparisonWithJSONBody())
                     .contains(

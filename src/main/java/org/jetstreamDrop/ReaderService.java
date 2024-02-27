@@ -113,7 +113,7 @@ public class ReaderService {
     }
   }
 
-  public List<ReadMessage> filter(String subject, String type, int page, int size) {
+  public List<ReadMessage> filter(String subject, String type, int page, int size, String bodyContent) {
     return msgs.stream()
         .filter(
             m -> {
@@ -128,6 +128,13 @@ public class ReaderService {
                 return m.name().contains(type);
               }
               return true;
+            })
+        .filter(
+            m -> {
+                if (!bodyContent.isBlank()) {
+                    return m.body().contains(bodyContent);
+                }
+                return true;
             })
         .skip((long) page * size)
         .limit(size)

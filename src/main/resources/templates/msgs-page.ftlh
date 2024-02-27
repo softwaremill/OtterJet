@@ -172,6 +172,10 @@
                 <label for="type" class="controls__label">Message type:</label>
                 <input type="text" id="type" name="type" value="${type}" class="controls__input">
             </div>
+            <div class="controls__field">
+                <label for="type" class="controls__label">Body filter:</label>
+                <input type="text" id="bodyContent" name="bodyContent" value="${bodyContent}" class="controls__input">
+            </div>
             <input type="hidden" id="page" name="page" value="${page}">
             <input type="hidden" id="size" name="size" value="${size}">
             <button type="submit" class="controls__button">Filter Messages</button>
