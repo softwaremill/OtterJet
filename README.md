@@ -36,6 +36,14 @@ The following properties need to be set in the `application.properties` file:
 
 After building the project, you can run it using the command `mvn spring-boot:run`.
 
+## Web Interface
+
+### Messages page
+![MessagesPage](docs/images/messages-page.png)
+
+### Monitoring page
+![MonitoringPage](docs/images/monitoring-page.png)
+
 ## Troubleshooting
 
 If you encounter any issues while setting up or running the project, please check the following:
