@@ -1,7 +1,7 @@
 read:
   mode: "proto"
   proto:
-      pathToDescriptor: "PATH_TO_PROTO_FILE"
+      pathToDescriptor: "/Users/sebastianrabiej/Documents/intellij/softwaremill/assessio/platform-services/proto/build/descriptors/main.dsc"
   subject: "*"
 
 server:
@@ -9,7 +9,7 @@ server:
 
 logging:
   level:
-    org.jetstreamDrop.monitoring.NatsMonitoringApiClient: DEBUG
+    otterjet.monitoring.NatsMonitoringApiClient: DEBUG
 
 nats:
   server:

@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JetStreamDrop</title>
+    <title>OtterJet</title>
     <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
-<h1>Welcome to the JetStreamDrop</h1>
+<h1>Welcome to the OtterJet</h1>
 <nav>
     <ul>
         <li><a href="<@spring.url '/msgs'/>">Messages List</a></li>

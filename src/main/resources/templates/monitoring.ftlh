@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JetStreamDrop</title>
+    <title>OtterJet</title>
     <link rel="stylesheet" href="/css/index.css">
     <style>
         table {
