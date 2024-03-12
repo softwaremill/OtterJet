@@ -55,14 +55,11 @@ class ProtoBufMessageDeserializer implements MessageDeserializer {
               .collect(Collectors.toList());
       final var messageDescriptor =
           descriptors.stream()
-              .filter(
-                  desc ->
-                      messageTypeName.equals(desc.getName())
-                          || messageTypeName.equals(desc.getFullName()))
+              .filter(desc -> messageTypeName.equals(desc.getName()) || messageTypeName.equals(desc.getFullName()))
               .findFirst()
               .orElseThrow(
                   () -> {
-                    final String errorMsg = "Can't find specific message type: " + messageTypeName;
+                    var errorMsg = "No message with type: " + messageTypeName;
                     LOG.error(errorMsg);
                     return new DeserializationException(errorMsg);
                   });
@@ -77,10 +74,10 @@ class ProtoBufMessageDeserializer implements MessageDeserializer {
       String content =
           printer
               .print(message)
-              .replace("\n", ""); // must remove line break so it defaults to collapse mode
+              .replace("\n", ""); // collapse mode
       return new DeserializedMessage(messageDescriptor.getName(), content);
     } catch (FileNotFoundException e) {
-      final String errorMsg = "Couldn't open descriptor file: " + fullDescFile;
+      final String errorMsg = "Cannot find descriptor file: " + fullDescFile;
       LOG.error(errorMsg, e);
       throw new DeserializationException(errorMsg);
     } catch (IOException e) {
