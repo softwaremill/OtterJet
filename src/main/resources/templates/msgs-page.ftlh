@@ -5,7 +5,12 @@
     <title>JetStream Messages Display</title>
     <link rel="stylesheet" href="/css/index.css">
     <style>
-
+        #logo {
+            position: absolute;
+            top: 3%;
+            right: 2%;
+            width: 10%;
+        }
         .message {
             padding-top: 10px;
             display: flex;
@@ -160,6 +165,7 @@
     </script>
 </head>
 <body>
+<img id="logo" src="<@spring.url '/images/otterjet-logo.png'/>" alt="OtterJet Logo">
 <h1>Messages List</h1>
 <div class="controls">
     <div class="controls__forms">
