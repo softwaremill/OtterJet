@@ -1,7 +1,7 @@
 read:
   mode: "proto"
   proto:
-      pathToDescriptor: "/Users/sebastianrabiej/Documents/intellij/softwaremill/assessio/platform-services/proto/build/descriptors/main.dsc"
+      pathToDescriptor: "path_to_descriptor"
   subject: "*"
 
 server:
