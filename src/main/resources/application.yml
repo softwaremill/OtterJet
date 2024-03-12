@@ -1,7 +1,7 @@
 read:
   mode: "proto"
-  #  proto:
-  #    pathToDescriptor: "src/test/resources/person.desc"
+  proto:
+      pathToDescriptor: "PATH_TO_PROTO_FILE"
   subject: "*"
 
 server:
@@ -13,5 +13,8 @@ logging:
 
 nats:
   server:
+#    monitoring:      # Optional, monitoring needs to be enabled in the nats server
+#      port: 8222
+#      protocol: "http"
     host: "localhost"
     port: 4222
