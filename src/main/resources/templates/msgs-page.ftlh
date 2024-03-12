@@ -138,6 +138,22 @@
             background: #3F51B5;
         }
 
+        .page_controls__button {
+            background: #5C6BC0;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page_controls__button:hover {
+            background: #3F51B5;
+        }
+
+        .pagination {
+            margin-left: 1%;
+        }
     </style>
     <script>
         function htmlDecode(input) {
@@ -189,9 +205,9 @@
         </form>
         <!-- Add pagination controls -->
         <div class="pagination">
-            <button onclick="document.getElementById('page').value = Math.max(0, ${page} - 1); document.forms[0].submit();">Previous</button>
+            <button class="page_controls__button" onclick="document.getElementById('page').value = Math.max(0, ${page} - 1); document.forms[0].submit();">Previous</button>
             <span>Page ${page + 1}</span>
-            <button onclick="document.getElementById('page').value = ${page} + 1; document.forms[0].submit();">Next</button>
+            <button class="page_controls__button" onclick="document.getElementById('page').value = ${page} + 1; document.forms[0].submit();">Next</button>
         </div>
     </div>
 </div>
