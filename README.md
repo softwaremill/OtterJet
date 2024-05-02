@@ -50,3 +50,11 @@ If you encounter any issues while setting up or running the project, please chec
 
 - Ensure that your NATS JetStream server is running and accessible.
 - Verify that the configuration properties in the `application.properties` file are correct.
+
+## Contributing
+
+All suggestions are welcome :)
+
+## Copyright
+
+Copyright (C) 2023-2024 SoftwareMill [https://softwaremill.com](https://softwaremill.com).
