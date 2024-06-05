@@ -5,6 +5,7 @@ on:
   push:
     branches: ['**']
     tags: [v*]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -33,5 +34,4 @@ jobs:
       with:
         name: Maven Tests
         path: target/surefire-reports/*.xml
-        reporter: java-junit
         fail-on-error: true
