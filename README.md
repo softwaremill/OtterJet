@@ -7,7 +7,7 @@ This project is particularly useful for developers who need to monitor traffic d
 
 ## Prerequisites
 
-- Java 11 or higher
+- Java 17 or higher
 - NATS JetStream server
 
 ## Features
