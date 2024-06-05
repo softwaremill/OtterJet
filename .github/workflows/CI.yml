@@ -29,7 +29,7 @@ jobs:
     - name: Attach test report
       uses: dorny/test-reporter@v1
       with:
-        name: Maven Tests
+        name: Compile and Test
         path: target/surefire-reports/*.xml
         reporter: java-junit
         fail-on-error: true
