@@ -1,4 +1,6 @@
-![Logo](docs/images/otterjet-logo.png?raw=true)
+<p align="center">
+    <img src="docs/images/otterjet-logo.png?raw=true"/>
+</p>
 
 # Welcome!
 
