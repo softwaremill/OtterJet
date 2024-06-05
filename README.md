@@ -1,5 +1,9 @@
 ![Logo](docs/images/otterjet-logo.png?raw=true)
 
+# Welcome!
+
+[![CI](https://github.com/softwaremill/otterJet/workflows/CI/badge.svg)](https://github.com/softwaremill/otterJet/actions?query=workflow%3A%22CI%22)
+
 # OtterJet
 
 OtterJet is a project designed to provide a visualization of messages from a NATS JetStream server. Offering a WEB interface for interacting with NATS JetStream servers.
