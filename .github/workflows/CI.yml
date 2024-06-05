@@ -30,7 +30,7 @@ jobs:
     - name: Test
       run: mvn test
     - name: Attach test report
-      uses: mikepenz/action-junit-report@v4
-      if: success() || failure() # always run even if the previous step fails
+      if: success() || failure()
+      uses: scacap/action-surefire-report@v1
       with:
-        report_paths: '**/target/surefire-reports/*.xml'
+        fail_on_test_failures: true
