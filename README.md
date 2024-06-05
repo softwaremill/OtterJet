@@ -1,4 +1,10 @@
-![Logo](docs/images/otterjet-logo.png?raw=true)
+<p align="center">
+    <img src="docs/images/otterjet-logo.png?raw=true"/>
+</p>
+
+# Welcome!
+
+[![CI](https://github.com/softwaremill/otterJet/workflows/CI/badge.svg)](https://github.com/softwaremill/otterJet/actions?query=workflow%3A%22CI%22)
 
 # OtterJet
 

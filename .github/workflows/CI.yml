@@ -1,0 +1,29 @@
+name: CI
+on:
+  pull_request:
+    branches: ['**']
+  push:
+    branches: ['**']
+    tags: [v*]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    # run on 1) push, 2) external PRs, 3)
+    # do not run on internal, non-steward PRs since those will be run by push to branch
+    if: |
+      github.event_name == 'push' || 
+      github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Build & Test
+      run: mvn clean package
