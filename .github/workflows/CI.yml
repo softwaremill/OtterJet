@@ -24,12 +24,14 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-    - name: Compile and Test
-      run: mvn clean package
+    - name: Build
+      run: mvn -DskipTests package
+    - name: Test
+      run: mvn -Dmaven.test.failure.ignore=true test
     - name: Attach test report
       uses: dorny/test-reporter@v1
       with:
-        name: Compile and Test
+        name: Maven Tests
         path: target/surefire-reports/*.xml
         reporter: java-junit
         fail-on-error: true
