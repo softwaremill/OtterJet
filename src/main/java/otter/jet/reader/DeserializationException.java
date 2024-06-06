@@ -1,4 +1,4 @@
-package otter.jet;
+package otter.jet.reader;
 
 public class DeserializationException extends RuntimeException {
   private static final long serialVersionUID = -2575341690419824332L;

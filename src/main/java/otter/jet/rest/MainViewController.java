@@ -1,4 +1,4 @@
-package otter.jet;
+package otter.jet.rest;
 
 import otter.jet.monitoring.NatsMonitoringDataLoader;
 import org.springframework.stereotype.Controller;

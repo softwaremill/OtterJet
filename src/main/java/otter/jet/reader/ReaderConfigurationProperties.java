@@ -1,4 +1,4 @@
-package otter.jet;
+package otter.jet.reader;
 
 import java.util.Objects;
 import org.springframework.boot.context.properties.ConfigurationProperties;

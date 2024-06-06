@@ -1,4 +1,4 @@
-package otter.jet;
+package otter.jet.reader;
 
 import io.nats.client.Connection;
 import io.nats.client.JetStream;

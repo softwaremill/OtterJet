@@ -1,4 +1,4 @@
-package otter.jet;
+package otter.jet.reader;
 
 import java.time.LocalDateTime;
 
