@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 class NatsMonitoringAutoConfiguration {
 
   @Configuration
-  @ConditionalOnExpression("'${nats.server.monitoring.port:}' != ''") // monitoring configured
+  @ConditionalOnExpression("'${nats.server.monitoring.port:}' != ''")
   static class NatsMonitoringEnabledConfiguration {
 
     @Bean
@@ -48,7 +48,7 @@ class NatsMonitoringAutoConfiguration {
   }
 
   @Configuration
-  @ConditionalOnExpression("'${nats.server.monitoring.port:}' == ''") // monitoring not configured
+  @ConditionalOnExpression("'${nats.server.monitoring.port:}' == ''")
   @AutoConfigureAfter(NatsMonitoringEnabledConfiguration.class)
   static class NatsMonitoringDisabledConfiguration {
 
