@@ -2,7 +2,7 @@ package otter.jet.proto;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import otter.jet.MessageDeserializer;
+import otter.jet.reader.MessageDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

@@ -15,9 +15,9 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import otter.jet.DeserializationException;
-import otter.jet.DeserializedMessage;
-import otter.jet.MessageDeserializer;
+import otter.jet.reader.DeserializationException;
+import otter.jet.reader.DeserializedMessage;
+import otter.jet.reader.MessageDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

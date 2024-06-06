@@ -1,6 +1,6 @@
 package otter.jet.plaintext;
 
-import otter.jet.MessageDeserializer;
+import otter.jet.reader.MessageDeserializer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

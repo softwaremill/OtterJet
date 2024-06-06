@@ -1,4 +1,4 @@
-package otter.jet;
+package otter.jet.reader;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
