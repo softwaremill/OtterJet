@@ -9,7 +9,7 @@ server:
 
 logging:
   level:
-    otterjet.monitoring.NatsMonitoringApiClient: DEBUG
+    otter.jet.monitoring.NatsMonitoringApiClient: DEBUG
 
 nats:
   server:
