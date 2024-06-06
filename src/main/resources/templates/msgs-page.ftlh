@@ -74,11 +74,6 @@
             overflow-y: auto;
         }
 
-        .message__content.collapsed {
-            max-height: 0;
-            padding: 0;
-        }
-
         .message__content, .message__header {
             width: 800px;
             max-width: 100%;
@@ -98,10 +93,6 @@
         .controls__form {
             display: flex;
             align-items: center;
-        }
-
-        .controls__form--refresh {
-            margin-left: 10px;
         }
 
         .controls__field {
@@ -249,5 +240,10 @@
         });
     </script>
 </#list>
+<nav>
+    <ul>
+        <li><a href="<@spring.url '/'/>">Back</a></li>
+    </ul>
+</nav>
 </body>
 </html>
