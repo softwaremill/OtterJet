@@ -1,0 +1,24 @@
+version: '3.9'
+
+volumes:
+  nats-storage:
+    driver: local
+
+services:
+  nats:
+    image: nats:2.10.7
+    command: [ "--jetstream", "-m", "8222" ]
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+        reservations:
+          memory: 2g
+    volumes:
+      - nats-storage:/data
+    expose:
+      - "4222"
+      - "8222"
+    ports:
+      - "4222:4222"
+      - "8222:8222"

@@ -52,7 +52,7 @@ class ProtoBufMessageDeserializer implements MessageDeserializer {
       final var descriptors =
           descs.stream()
               .flatMap(desc -> desc.getMessageTypes().stream())
-              .collect(Collectors.toList());
+              .toList();
       final var messageDescriptor =
           descriptors.stream()
               .filter(desc -> messageTypeName.equals(desc.getName()) || messageTypeName.equals(desc.getFullName()))
