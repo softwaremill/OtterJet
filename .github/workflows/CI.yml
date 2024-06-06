@@ -12,8 +12,7 @@ permissions:
 
 jobs:
   ci:
-    # run on 1) push, 2) external PRs, 3)
-    # do not run on internal, non-steward PRs since those will be run by push to branch
+    # run on push, external PRs do not run on internal PRs since those will be run by push to branch
     if: |
       github.event_name == 'push' || 
       github.event.pull_request.head.repo.full_name != github.repository
