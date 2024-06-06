@@ -68,5 +68,10 @@
         </#list>
     </table>
 </#list>
+<nav>
+    <ul>
+        <li><a href="<@spring.url '/'/>">Back</a></li>
+    </ul>
+</nav>
 </body>
 </html>

@@ -16,30 +16,6 @@
             padding: 15px;
         }
 
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        nav ul li {
-            display: inline;
-            margin-right: 10px;
-        }
-
-        nav ul li a {
-            display: inline-block;
-            color: #fff;
-            text-decoration: none;
-            background-color: #5C6BC0;
-            padding: 10px 15px;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            background-color: #3F51B5;
-        }
-
         .header {
             display: flex;
             align-items: center;
