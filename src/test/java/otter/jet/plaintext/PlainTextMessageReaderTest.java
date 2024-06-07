@@ -1,6 +1,5 @@
 package otter.jet.plaintext;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 import com.github.javafaker.Faker;
@@ -15,21 +14,20 @@ import otter.jet.JetStreamContainerInitializer;
 import otter.jet.JetStreamUtils;
 import otter.jet.reader.ReadMessage;
 import otter.jet.reader.ReaderConfigurationProperties;
-import otter.jet.reader.ReaderService;
 import otter.jet.assertions.ComparisonConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
+import otter.jet.store.Filters;
+import otter.jet.store.MessageStore;
 
 @TestPropertySource(properties = {"read.mode=plaintext", "read.subject=plaintext"})
 class PlainTextMessageReaderTest extends AbstractIntegrationTest {
 
   private static final LocalDateTime ignoredMessageTimestamp =
       LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
-  @Autowired private ReaderService readerService;
+  @Autowired private MessageStore messageStore;
   @Autowired private ReaderConfigurationProperties readerConfigurationProperties;
-  private final String subjectFilter = "";
-  private final String typeFilter = "";
 
   @Test
   public void shouldReadMessagesSentInPlaintext() {
@@ -50,7 +48,7 @@ class PlainTextMessageReaderTest extends AbstractIntegrationTest {
     await()
         .untilAsserted(
             () ->
-                Assertions.assertThat(readerService.filter(subjectFilter, typeFilter, 0, 10, ""))
+                Assertions.assertThat(messageStore.filter(Filters.empty(), 0, 10))
                     .usingRecursiveFieldByFieldElementComparator(
                         ComparisonConfiguration.configureReadMessageComparison())
                     .contains(
