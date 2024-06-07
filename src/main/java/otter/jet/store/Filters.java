@@ -4,24 +4,19 @@ import otter.jet.reader.ReadMessage;
 
 import java.util.function.Predicate;
 
+// For more parameters consider builder
 public record Filters(String subject, String type, String bodyContent) {
-
-    public static Filters of(String subject, String type, String bodyContent) {
-        return new Filters(subject, type, bodyContent);
-    }
-
-    public static Filters of(String subject, String type) {
-        return new Filters(subject, type, "");
-    }
-
-
-    public static Filters of(String subject) {
-        return new Filters(subject, "" ,"");
-    }
-
 
     public static Filters empty() {
         return new Filters("", "", "");
+    }
+
+    public static Filters of(String subject) {
+        return new Filters(subject, "", "");
+    }
+
+    public static Filters of(String subject, String type, String bodyContent) {
+        return new Filters(subject, type, bodyContent);
     }
 
     Predicate<ReadMessage> toPredicate() {
