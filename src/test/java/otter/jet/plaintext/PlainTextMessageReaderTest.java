@@ -9,7 +9,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import org.assertj.core.api.Assertions;
 import otter.jet.AbstractIntegrationTest;
 import otter.jet.JetStreamContainerInitializer;
 import otter.jet.JetStreamUtils;
@@ -50,7 +49,7 @@ class PlainTextMessageReaderTest extends AbstractIntegrationTest {
     await()
         .untilAsserted(
             () ->
-                Assertions.assertThat(readerService.filter(subjectFilter, typeFilter, 0, 10, ""))
+                assertThat(readerService.filter(subjectFilter, typeFilter, 0, 10, ""))
                     .usingRecursiveFieldByFieldElementComparator(
                         ComparisonConfiguration.configureReadMessageComparison())
                     .contains(
