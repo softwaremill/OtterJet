@@ -18,7 +18,7 @@
         <spring.boot.version>3.3.0</spring.boot.version>
         <spring.cloud.version>2023.0.2</spring.cloud.version>
         <feign.jackson.version>13.2.1</feign.jackson.version>
-        <protobuf.java.version>3.25.0</protobuf.java.version>
+        <protobuf.java.version>3.25.5</protobuf.java.version>
         <grpc.version>1.64.0</grpc.version>
         <javafaker.version>1.0.2</javafaker.version>
         <json.version>20240303</json.version>
