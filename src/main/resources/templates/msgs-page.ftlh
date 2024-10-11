@@ -57,6 +57,11 @@
             color: #333;
         }
 
+        .message__content.collapsed {
+            max-height: 0;
+            padding: 0;
+        }
+
         /* Styles for the collapsible content */
         .message__content {
             background: white;
@@ -147,13 +152,13 @@
         }
     </style>
     <script>
-        const htmlDecode = (input) => {
-            const doc = new DOMParser().parseFromString(input, "text/html");
+        function htmlDecode(input) {
+            var doc = new DOMParser().parseFromString(input, "text/html");
             return doc.documentElement.textContent;
         }
 
-        const toggleCollapse = (contentId, button) => {
-            const element = document.getElementById(contentId);
+        function toggleCollapse(contentId, button) {
+            var element = document.getElementById(contentId);
             element.classList.toggle("collapsed");
 
             // Update button text based on the state
@@ -164,9 +169,9 @@
             }
         }
 
-        const formatTimestamp = (timestamp) => {
-            const date = new Date(timestamp);
-            const options = {year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'};
+        function formatTimestamp(timestamp) {
+            var date = new Date(timestamp);
+            var options = {year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'};
             return date.toLocaleDateString(undefined, options);
         }
     </script>
@@ -223,19 +228,19 @@
 
     <script>
         try {
-            const decodedMessage = htmlDecode('${message.body()?json_string}');
-            const messageData = JSON.parse(decodedMessage);
-            document.getElementById('collapsible-${message_index}').textContent = JSON.stringify(messageData, null, 4);
+            var decodedMessage = htmlDecode('${message.body()?json_string}');
+            var messageData = JSON.parse(decodedMessage);
+            var formattedJson = JSON.stringify(messageData, null, 4);
+            document.getElementById('collapsible-${message_index}').textContent = formattedJson;
         } catch (error) {
             document.getElementById('collapsible-${message_index}').textContent = '${message.body()}';
         }
 
         document.addEventListener('DOMContentLoaded', (event) => {
-            document
-                .querySelectorAll('.message__timestamp')
-                .forEach((elem) => {
-                    const timestamp = elem.getAttribute('data-timestamp');
-                    elem.textContent = formatTimestamp(timestamp);
+            var timestamps = document.querySelectorAll('.message__timestamp');
+            timestamps.forEach(function (elem) {
+                var timestamp = elem.getAttribute('data-timestamp');
+                elem.textContent = formatTimestamp(timestamp);
             });
         });
     </script>

@@ -26,6 +26,7 @@ class ReaderConfiguration {
                 createNatsServerUrl(natsServerHost, natsServerPort),
                 messageDeserializer,
                 readerConfigurationProperties.getSubject(),
+                readerConfigurationProperties.getStartDate(),
                 messageStore);
     }
 
