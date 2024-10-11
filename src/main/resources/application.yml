@@ -4,7 +4,7 @@ read:
       pathToDescriptor: "path_to_descriptor"
   subject: "*"
   store:
-    limit: 1000
+    limit: 10000
 #  startDate: "2020-01-01T00:00:00Z" # format is "yyyy-MM-dd'T'HH:mm:ss'Z'"
 
 server:
