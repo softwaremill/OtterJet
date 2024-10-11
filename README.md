@@ -37,6 +37,8 @@ The following properties need to be set in the `application.properties` file:
 - `read.mode`: The mode to use for deserialization (either `proto` or `plaintext`).
 - `read.subject`: The subject to read messages from.
 - `read.proto.pathToDescriptor`: The path to the protobuf descriptor file (only required if `read.mode` is set to `proto`).
+- `read.store.limit`: The maximum number of messages to store in memory.
+- `read.startDate`: Optional date from which to start reading messages.
 
 ## Usage
 
