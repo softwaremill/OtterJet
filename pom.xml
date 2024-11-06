@@ -22,7 +22,7 @@
         <grpc.version>1.64.0</grpc.version>
         <javafaker.version>1.0.2</javafaker.version>
         <json.version>20240303</json.version>
-        <jnats.version>2.18.1</jnats.version>
+        <jnats.version>2.20.2</jnats.version>
         <slf4j-api.version>2.0.9</slf4j-api.version>
     </properties>
 
