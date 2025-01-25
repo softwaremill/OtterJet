@@ -1,8 +1,7 @@
-package otter.jet.examples;
+package otter.jet.examples.protobuf;
 
 import com.github.javafaker.Faker;
 import org.jetbrains.annotations.NotNull;
-import otter.jet.examples.protobuf.PersonProtos;
 
 public class RandomProtoPersonGenerator {
 

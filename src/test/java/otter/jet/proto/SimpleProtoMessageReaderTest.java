@@ -9,7 +9,7 @@ import otter.jet.AbstractIntegrationTest;
 import otter.jet.JetStreamContainerInitializer;
 import otter.jet.JetStreamUtils;
 import otter.jet.assertions.ComparisonConfiguration;
-import otter.jet.examples.RandomProtoPersonGenerator;
+import otter.jet.examples.protobuf.RandomProtoPersonGenerator;
 import otter.jet.examples.protobuf.PersonProtos.Person;
 import otter.jet.reader.ReadMessage;
 import otter.jet.reader.ReaderConfigurationProperties;

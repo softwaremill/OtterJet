@@ -1,0 +1,28 @@
+{
+  "type": "record",
+  "name": "Person",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "numbers",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    },
+    {
+      "name": "email",
+      "type": [
+        "null",
+        "string"
+      ]
+    }
+  ]
+}
