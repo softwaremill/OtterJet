@@ -17,7 +17,7 @@
         <testcontainers.version>1.19.8</testcontainers.version>
         <spring.boot.version>3.3.0</spring.boot.version>
         <spring.cloud.version>2023.0.2</spring.cloud.version>
-        <feign.jackson.version>13.2.1</feign.jackson.version>
+        <feign.jackson.version>13.5</feign.jackson.version>
         <protobuf.java.version>3.25.5</protobuf.java.version>
         <grpc.version>1.68.0</grpc.version>
         <javafaker.version>1.0.2</javafaker.version>
