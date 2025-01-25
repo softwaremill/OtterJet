@@ -1,50 +1,53 @@
-package otter.jet.proto;
+package otter.jet.avro;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-import com.google.protobuf.Any;
+import java.io.File;
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-
-import otter.jet.AbstractIntegrationTest;
-import otter.jet.JetStreamContainerInitializer;
-import otter.jet.JetStreamUtils;
-import otter.jet.reader.ReadMessage;
-import otter.jet.reader.ReaderConfigurationProperties;
-import otter.jet.assertions.ComparisonConfiguration;
-import otter.jet.examples.protobuf.RandomProtoPersonGenerator;
+import org.apache.avro.Schema;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
-import otter.jet.examples.protobuf.PersonProtos.Person;
+import otter.jet.AbstractIntegrationTest;
+import otter.jet.JetStreamContainerInitializer;
+import otter.jet.JetStreamUtils;
+import otter.jet.assertions.ComparisonConfiguration;
+import otter.jet.examples.avro.RandomAvroPersonGenerator;
+import otter.jet.reader.ReadMessage;
+import otter.jet.reader.ReaderConfigurationProperties;
 import otter.jet.store.Filters;
 import otter.jet.store.MessageStore;
 
 @TestPropertySource(
     properties = {
-      "read.mode=proto",
-      "read.subject=any_person",
-      "read.proto.pathToDescriptor=src/test/resources/person.desc"
+        "read.mode=avro",
+        "read.subject=avro_person",
+        "read.avro.pathToSchema=src/test/resources/person.avsc"
     })
-class AnyProtoMessageReaderTest extends AbstractIntegrationTest {
+class SimpleAvroMessageReaderTest extends AbstractIntegrationTest {
 
   private static final LocalDateTime ignoredMessageTimestamp =
       LocalDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
-  @Autowired private MessageStore messageStore;
-  @Autowired private ReaderConfigurationProperties readerConfigurationProperties;
+  @Autowired
+  private MessageStore messageStore;
+  @Autowired
+  private ReaderConfigurationProperties readerConfigurationProperties;
 
   @Test
-  public void shouldReadProtoMessageSentAsAny() {
+  public void shouldReadProtoMessageSentAsSpecificType() throws IOException {
     // given
     JetStreamUtils.createSubjectStream(
         readerConfigurationProperties.getSubject(),
         JetStreamContainerInitializer.getNatsServerUrl());
-    Person person = RandomProtoPersonGenerator.randomPerson();
-    byte[] data = Any.pack(person).toByteArray();
+    var schema = new Schema.Parser().parse(new File("src/test/resources/person.avsc"));
+    var person = RandomAvroPersonGenerator.randomPerson(schema);
+    byte[] data = person.toByteArray();
 
     // when
     JetStreamUtils.tryToSendMessage(
@@ -64,10 +67,10 @@ class AnyProtoMessageReaderTest extends AbstractIntegrationTest {
                             readerConfigurationProperties.getSubject(),
                             "Person",
                             new JSONObject()
-                                .put("id", person.getId())
-                                .put("name", person.getName())
-                                .put("email", person.getEmail())
-                                .put("numbers", new JSONArray().put(person.getNumbers(0)))
+                                .put("id", person.id())
+                                .put("name", person.name())
+                                .put("email", person.email())
+                                .put("numbers", new JSONArray().put(person.phoneNumber()))
                                 .toString(),
                             ignoredMessageTimestamp)));
   }

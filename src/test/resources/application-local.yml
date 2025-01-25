@@ -1,5 +1,7 @@
 read:
-  mode: "proto"
+  mode: "avro"
   proto:
     pathToDescriptor: "src/test/resources/person.desc"
+  avro:
+    pathToSchema: "src/test/resources/person.avsc"
   subject: "*"
